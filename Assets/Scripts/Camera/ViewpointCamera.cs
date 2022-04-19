@@ -32,10 +32,11 @@ namespace VirTest.Camera
             ModeName = "Viewpoint";
         }
 
-        public void Activate()
+        public void Activate(Vector3 prevPosition = default, Quaternion prevRotation = default)
         {
             gameObject.SetActive(true);
             normalFOV = Camera.fieldOfView;
+            transform.SetPositionAndRotation(prevPosition, prevRotation);
             Switch();
         }
 

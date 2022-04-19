@@ -20,7 +20,7 @@ namespace VirTest.Camera
 
         void ZoomOut();
 
-        void Activate();
+        void Activate(Vector3 prevPosition = default, Quaternion prevRotation = default);
 
         void Deactivate();
 

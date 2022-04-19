@@ -79,8 +79,9 @@ public class CameraController : MonoBehaviour
             index = (index + 1) % cameras.Count;
             currentCamera = cameras[index];
 
+            Transform t = prevCamera.Camera.transform;
             prevCamera.Deactivate();
-            currentCamera.Activate();
+            currentCamera.Activate(t.position, t.rotation);
         }
 
         currentMode = currentCamera.ModeName;
