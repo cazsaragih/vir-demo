@@ -49,6 +49,9 @@ public class CameraController : MonoBehaviour
 
     private void LeanTouch_OnFingerUpdate(LeanFinger finger)
     {
+        if (finger.IsOverGui)
+            return;
+
         currentCamera.OnFingerUpdate(finger.ScreenDelta.x, finger.ScreenDelta.y);
     }
 
