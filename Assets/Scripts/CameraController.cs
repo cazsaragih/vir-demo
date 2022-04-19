@@ -1,105 +1,95 @@
-using System.Collections;
+using Lean.Touch;
 using System.Collections.Generic;
 using UnityEngine;
-using Lean.Touch;
-using DG.Tweening;
+using VirTest.Camera;
+using VirTest.Event;
 
 public class CameraController : MonoBehaviour
 {
-    public Transform cube;
+    [SerializeField] private List<GameObject> cameraObjects;
+    [SerializeField] private string currentMode;
 
-    public enum Mode
-    {
-        Freeview,
-        Viewpoint
-    }
-
-    [SerializeField, Range(2, 4)] private int zoomMultiplier;
-
-    private Camera cam;
-    private float deltaX;
-    private float deltaY;
-    private bool isDragging;
-    private float normalFOV;
-    [SerializeField] private float velocity;
-   
-    public Mode mode;
+    private List<ICamera> cameras = new List<ICamera>();
+    private ICamera currentCamera;
 
     // Start is called before the first frame update
     void Awake()
     {
-        cam = GetComponent<Camera>();
+        for (int i = 0; i < cameraObjects.Count; i++)
+        {
+            ICamera cam = cameraObjects[i].GetComponent<ICamera>();
+            if (cam != null)
+                cameras.Add(cam);
+        }
 
+        EventManager.AddListener<SwitchClick>(OnSwitchClick);
+        EventManager.AddListener<ModeClick>(OnModeClick);
         LeanTouch.OnFingerUpdate += LeanTouch_OnFingerUpdate;
     }
 
     private void Start()
     {
-        normalFOV = cam.fieldOfView;
+        for (int i = 0; i < cameras.Count; i++)
+        {
+            ICamera cam = cameras[i];
+            cam.Deactivate();
+        }
+
+        ChangeMode();
+    }
+
+    private void OnSwitchClick(SwitchClick e)
+    {
+        currentCamera.Switch();
+    }
+
+    private void OnModeClick(ModeClick e)
+    {
+        ChangeMode();
     }
 
     private void LeanTouch_OnFingerUpdate(LeanFinger finger)
     {
-        isDragging = true;
-        deltaX = finger.ScreenDelta.x;
-        deltaY = finger.ScreenDelta.y;
+        currentCamera.OnFingerUpdate(finger.ScreenDelta.x, finger.ScreenDelta.y);
     }
 
     private void Update()
     {
-        switch (mode)
-        {
-            case Mode.Freeview:
-                Freeview();
-                break;
-            case Mode.Viewpoint:
-                Viewpoint();
-                break;
-        }
-    }
-
-    private void Freeview()
-    {
-        if (Input.GetMouseButton(1))
-        {
-            float zoomFOV = normalFOV / zoomMultiplier;
-            if (!Mathf.Approximately(cam.fieldOfView, zoomFOV))
-            {
-                cam.fieldOfView = Mathf.SmoothDamp(cam.fieldOfView, zoomFOV, ref velocity, 0.2f);
-            }
-        }
-        else 
-        {
-            if (!Mathf.Approximately(cam.fieldOfView, normalFOV))
-            {
-                cam.fieldOfView = Mathf.SmoothDamp(cam.fieldOfView, normalFOV, ref velocity, 0.2f);
-            }
-        }
-
-
-        if (!isDragging)
+        if (currentCamera == null)
             return;
 
-        transform.position = cube.position;
-        transform.Rotate(Vector3.up, deltaX * 20 * Time.deltaTime, Space.World);
-        transform.Rotate(Vector3.right, -deltaY * 20 * Time.deltaTime);
-        transform.Translate(0, 0, -10);
-
-        isDragging = false;
+        currentCamera.OnUpdate();
     }
 
-    private void Viewpoint()
+    private void ChangeMode()
     {
-        
-    }
+        if (currentCamera == null)
+        {
+            currentCamera = cameras[0];
+            currentCamera.Activate();
+        }
+        else
+        {
+            int index = cameras.IndexOf(currentCamera);
+            if (index < 0)
+                return;
 
-    private void SetState(Mode mode)
-    {
-        this.mode = mode;
+            currentCamera.Deactivate();
+
+            index = (index + 1) % cameras.Count;
+            currentCamera = cameras[index];
+
+            currentCamera.Activate();
+        }
+
+        currentMode = currentCamera.ModeName;
+        EventManager.TriggerEvent(new ModeChange(currentCamera.ModeName));
     }
 
     private void OnDestroy()
     {
         LeanTouch.OnFingerUpdate += LeanTouch_OnFingerUpdate;
+        EventManager.RemoveListener<SwitchClick>(OnSwitchClick);
+        EventManager.RemoveListener<ModeClick>(OnModeClick);
     }
 }
