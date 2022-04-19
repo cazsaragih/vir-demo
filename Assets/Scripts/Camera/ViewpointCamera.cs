@@ -16,8 +16,10 @@ namespace VirTest.Camera
 
         public bool IsDragging { get; private set; }
 
-        [SerializeField, Range(2, 4)] private int zoomMultiplier;
         [SerializeField] private List<GameObject> viewpoints;
+        [SerializeField, Range(2, 4)] private int zoomMultiplier = 2;
+        [SerializeField] private float rotateSpeed = 20f;
+        [SerializeField] private Vector3 defaultLookRotation = Vector3.zero;
 
         private GameObject currentViewpoint;
         private float normalFOV;
@@ -38,6 +40,7 @@ namespace VirTest.Camera
         public void Deactivate()
         {
             gameObject.SetActive(false);
+            currentViewpoint = null;
         }
 
         public void Init()
@@ -77,7 +80,7 @@ namespace VirTest.Camera
             if (currentViewpoint == null)
             {
                 currentViewpoint = viewpoints[0];
-                SetInitialPos(currentViewpoint);
+                SetInitialPosAndRot(currentViewpoint);
             }
             else
             {
@@ -87,7 +90,7 @@ namespace VirTest.Camera
 
                 index = (index + 1) % viewpoints.Count;
                 currentViewpoint = viewpoints[index];
-                SetInitialPos(currentViewpoint);
+                SetInitialPosAndRot(currentViewpoint);
             }
         }
 
@@ -110,14 +113,17 @@ namespace VirTest.Camera
         
         private void Rotate()
         {
-            transform.Rotate(new Vector3(-DeltaY, -DeltaX, 0f) * Time.deltaTime, Space.World);
+            transform.Rotate(new Vector3(DeltaY, 0f, 0f) * rotateSpeed * Time.deltaTime);
+            transform.Rotate(new Vector3(0f, -DeltaX, 0f) * rotateSpeed * Time.deltaTime, Space.World);
         }
 
-        private void SetInitialPos(GameObject go)
+        private void SetInitialPosAndRot(GameObject go)
         {
             transform.position = new Vector3(go.transform.position.x,
                                              go.transform.position.y,
                                              go.transform.position.z);
+
+            transform.LookAt(defaultLookRotation);
         }
     }
 }
