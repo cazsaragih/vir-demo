@@ -96,5 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee56bc9bbda740846b45d9f3d4bfe263, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomMultiplier: 2
   viewpoints: []
+  zoomMultiplier: 2
+  rotateSpeed: 10
+  defaultLookRotation: {x: 0, y: 0, z: 0}

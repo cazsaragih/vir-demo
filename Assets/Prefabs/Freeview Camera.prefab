@@ -96,6 +96,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd54b744160ab1f4f9d91abcc72d4477, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomMultiplier: 2
   objectsToOrbit: []
-  orbitOffsetZ: 0
+  zoomMultiplier: 2
+  orbitSpeed: 20
+  orbitOffsetZ: -10
