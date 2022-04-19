@@ -16,9 +16,10 @@ namespace VirTest.Camera
 
         public bool IsDragging { get; private set; }
 
-        [SerializeField, Range(2, 4)] private int zoomMultiplier;
         [SerializeField] private List<GameObject> objectsToOrbit;
-        [SerializeField] private float orbitOffsetZ;
+        [SerializeField, Range(2, 4)] private int zoomMultiplier = 2;
+        [SerializeField] private float orbitSpeed = 20f;
+        [SerializeField] private float orbitOffsetZ = -10f;
 
         private GameObject currentObjToOrbit;
         private float normalFOV;
@@ -116,9 +117,9 @@ namespace VirTest.Camera
                 return;
 
             transform.position = obj.transform.position;
-            transform.Rotate(Vector3.up, DeltaX * 20 * Time.deltaTime, Space.World);
-            transform.Rotate(Vector3.right, -DeltaY * 20 * Time.deltaTime);
-            transform.Translate(0, 0, -10);
+            transform.Rotate(Vector3.up, DeltaX * orbitSpeed * Time.deltaTime, Space.World);
+            transform.Rotate(Vector3.right, -DeltaY * orbitSpeed * Time.deltaTime);
+            transform.Translate(0, 0, orbitOffsetZ);
         }
 
         private void SetInitialOrbitPos(GameObject go)
