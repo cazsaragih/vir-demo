@@ -74,11 +74,12 @@ public class CameraController : MonoBehaviour
             if (index < 0)
                 return;
 
-            currentCamera.Deactivate();
+            ICamera prevCamera = currentCamera;
 
             index = (index + 1) % cameras.Count;
             currentCamera = cameras[index];
 
+            prevCamera.Deactivate();
             currentCamera.Activate();
         }
 
