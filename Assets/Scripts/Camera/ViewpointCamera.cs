@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace VirTest.Camera
 {
     public class ViewpointCamera : MonoBehaviour, ICamera
     {
-        public UnityEngine.Camera Camera { get; private set; }
+        public UnityEngine.Camera Camera { get; set; }
 
         public string ModeName { get; private set; }
 
@@ -34,19 +35,14 @@ namespace VirTest.Camera
         public void Activate()
         {
             gameObject.SetActive(true);
-            Init();
+            normalFOV = Camera.fieldOfView;
+            Switch();
         }
 
         public void Deactivate()
         {
             gameObject.SetActive(false);
             currentViewpoint = null;
-        }
-
-        public void Init()
-        {
-            normalFOV = Camera.fieldOfView;
-            Switch();
         }
 
         public void OnFingerUpdate(float dX, float dY)
@@ -119,11 +115,10 @@ namespace VirTest.Camera
 
         private void SetInitialPosAndRot(GameObject go)
         {
-            transform.position = new Vector3(go.transform.position.x,
-                                             go.transform.position.y,
-                                             go.transform.position.z);
+            transform.DOMove(new Vector3(go.transform.position.x, go.transform.position.y, go.transform.position.z), 1f)
+                .SetEase(Ease.OutQuint)
+                .OnUpdate(() => { transform.LookAt(defaultLookRotation); });
 
-            transform.LookAt(defaultLookRotation);
         }
     }
 }

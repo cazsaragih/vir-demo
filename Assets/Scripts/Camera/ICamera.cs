@@ -14,8 +14,6 @@ namespace VirTest.Camera
 
         bool IsDragging { get; }
 
-        void Init();
-
         void OnUpdate();
 
         void ZoomIn();
