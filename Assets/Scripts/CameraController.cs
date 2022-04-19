@@ -7,7 +7,6 @@ using VirTest.Event;
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> cameraObjects;
-    [SerializeField] private string currentMode;
 
     private List<ICamera> cameras = new List<ICamera>();
     private ICamera currentCamera;
@@ -84,7 +83,6 @@ public class CameraController : MonoBehaviour
             currentCamera.Activate(t.position, t.rotation);
         }
 
-        currentMode = currentCamera.ModeName;
         EventManager.TriggerEvent(new ModeChange(currentCamera.ModeName));
     }
 
