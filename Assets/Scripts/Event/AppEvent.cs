@@ -4,6 +4,8 @@ namespace VirTest.Event
 
     public class ModeClick { }
 
+    public class ItemClick { }
+
     public class ModeChange
     {
         public string modeName;
