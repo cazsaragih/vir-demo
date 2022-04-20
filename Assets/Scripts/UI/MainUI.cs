@@ -6,7 +6,7 @@ using VirTest.Event;
 
 namespace VirTest.UI
 {
-    public class CameraUI : MonoBehaviour
+    public class MainUI : MonoBehaviour
     {
         [SerializeField] private Button switchButton;
         [SerializeField] private Button modeButton;
