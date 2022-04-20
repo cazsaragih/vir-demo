@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using UnityEditor;
-using System.IO;
 
 public class AssetImporter : AssetPostprocessor
 {
@@ -26,7 +23,7 @@ public class AssetImporter : AssetPostprocessor
             return;
 
         TextureImporter textureImporter = (TextureImporter)assetImporter;
-        
+
 
         // Don't apply the settings if want to manually override the settings on inspector.
         if (textureImporter.importSettingsMissing)
