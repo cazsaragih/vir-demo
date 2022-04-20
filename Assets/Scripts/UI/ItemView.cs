@@ -1,23 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-public class ItemView : MonoBehaviour
+namespace VirTest.UI
 {
-    public string Index { get; private set; }
-
-    [SerializeField] private TMP_Text label;
-
-    public void SetIndex(string text)
+    public class ItemView : MonoBehaviour
     {
-        Index = text;
-        label.text = text;
-    }
+        public string Index { get; private set; }
 
-    public void ResetIndex()
-    {
-        Index = "";
-        label.text = "";
+        [SerializeField] private TMP_Text label;
+
+        public void SetIndex(string text)
+        {
+            Index = text;
+            label.text = text;
+        }
+
+        public void ResetIndex()
+        {
+            Index = "";
+            label.text = "";
+        }
     }
 }
