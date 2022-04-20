@@ -12,6 +12,7 @@ namespace VirTest.UI
 {
     public class ItemUI : MonoBehaviour
     {
+        [SerializeField] private int addBtnCount = 10;
         [SerializeField] private Button addBtn;
         [SerializeField] private Button reorderBtn;
         [SerializeField] private Button insertBtn;
@@ -23,9 +24,9 @@ namespace VirTest.UI
 
         private void Awake()
         {
-            addBtn.onClick.AddListener(AddItems);
+            addBtn.onClick.AddListener(()=>AddItems(addBtnCount));
             reorderBtn.onClick.AddListener(ReorderItems);
-            insertBtn.onClick.AddListener(InsertItem);
+            insertBtn.onClick.AddListener(AddItem);
             closeBtn.onClick.AddListener(ClosePanel);
 
             EventManager.AddListener<ItemClick>(OnItemClick);
@@ -36,19 +37,24 @@ namespace VirTest.UI
             Deactivate();
         }
 
-        private void AddItems()
+        private void AddItems(int count)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < count; i++)
             {
-                GameObject spawnedObject = leanPool.Spawn(itemParent.transform);
-                ItemView itemView = spawnedObject.GetComponent<ItemView>();
-                string randString = RandomUtility.GenerateAlphaNumericString();
-                
-                itemView.SetIndex(randString);
-                
-                if (itemViews != null)
-                    itemViews.Add(itemView);
+                AddItem();
             }
+        }
+
+        private void AddItem()
+        {
+            GameObject spawnedObject = leanPool.Spawn(itemParent.transform);
+            ItemView itemView = spawnedObject.GetComponent<ItemView>();
+            string randString = RandomUtility.GenerateAlphaNumericString();
+
+            itemView.SetIndex(randString);
+
+            if (itemViews != null)
+                itemViews.Add(itemView);
         }
 
         private void ReorderItems()
@@ -60,11 +66,6 @@ namespace VirTest.UI
             {
                 itemViews[i].SetIndex(indexList[i]);
             }
-        }
-
-        private void InsertItem()
-        {
-
         }
 
         private void ClosePanel()

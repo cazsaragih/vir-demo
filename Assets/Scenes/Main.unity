@@ -1414,7 +1414,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Insert (1)
+  m_text: Insert
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1689,7 +1689,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Add (10)
+  m_text: Add
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2773,6 +2773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 425ec87dd66185147bb5eda3535cefbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  addBtnCount: 10
   addBtn: {fileID: 1572783966}
   reorderBtn: {fileID: 1255027382}
   insertBtn: {fileID: 1007257792}
