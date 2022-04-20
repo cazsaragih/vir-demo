@@ -91,8 +91,8 @@ public class CameraController : MonoBehaviour
 
     private void OnDestroy()
     {
-        LeanTouch.OnFingerUpdate += LeanTouch_OnFingerUpdate;
         EventManager.RemoveListener<SwitchClick>(OnSwitchClick);
         EventManager.RemoveListener<ModeClick>(OnModeClick);
+        LeanTouch.OnFingerUpdate -= LeanTouch_OnFingerUpdate;
     }
 }

@@ -105,7 +105,7 @@ namespace VirTest.UI
             insertBtn.onClick.RemoveAllListeners();
             closeBtn.onClick.RemoveAllListeners();
 
-            EventManager.AddListener<ItemClick>(OnItemClick);
+            EventManager.RemoveListener<ItemClick>(OnItemClick);
         }
     }
 }
