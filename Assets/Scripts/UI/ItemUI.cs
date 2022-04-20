@@ -26,7 +26,7 @@ namespace VirTest.UI
         {
             addBtn.onClick.AddListener(()=>AddItems(addBtnCount));
             reorderBtn.onClick.AddListener(ReorderItems);
-            insertBtn.onClick.AddListener(AddItem);
+            insertBtn.onClick.AddListener(InsertItem);
             closeBtn.onClick.AddListener(ClosePanel);
 
             EventManager.AddListener<ItemClick>(OnItemClick);
@@ -45,7 +45,7 @@ namespace VirTest.UI
             }
         }
 
-        private void AddItem()
+        private ItemView AddItem()
         {
             GameObject spawnedObject = leanPool.Spawn(itemParent.transform);
             ItemView itemView = spawnedObject.GetComponent<ItemView>();
@@ -55,17 +55,29 @@ namespace VirTest.UI
 
             if (itemViews != null)
                 itemViews.Add(itemView);
+
+            return itemView;
         }
 
         private void ReorderItems()
         {
-            // Ordering the value instead of the UI object because it performs better
+            // Ordering the value instead of the UI object because it performs better.
+            // Since the instance doesn't matter (in this case), this will do just fine.
             List<string> indexList = itemViews.Select(i => i.Index).ToList();
             indexList.Sort();
             for (int i = 0; i < itemViews.Count; i++)
             {
                 itemViews[i].SetIndex(indexList[i]);
             }
+        }
+
+        private void InsertItem()
+        {
+            ItemView addedItem = AddItem();
+            Debug.Log($"Inserted index: {addedItem.Index}");
+
+            // Spawning at the proper position means we need to reorder them all.
+            ReorderItems();
         }
 
         private void ClosePanel()
